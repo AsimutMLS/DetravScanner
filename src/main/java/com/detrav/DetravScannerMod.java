@@ -55,6 +55,7 @@ public class DetravScannerMod
     }
 
 
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);

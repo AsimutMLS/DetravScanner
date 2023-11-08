@@ -3,6 +3,7 @@ package com.detrav.net;
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravScannerGUI;
 import com.detrav.gui.textures.DetravMapTexture;
+import com.detrav.proxies.ClientProxy;
 import com.google.common.base.Objects;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -116,7 +117,10 @@ public class ProspectingPacket extends DetravPacket {
                 }
             }
         int checkOut2 = aData.readInt();
-        if(checkOut != checkOut2) return null;
+        if(checkOut != checkOut2) {
+            ClientProxy.sendMessage = true;
+            return null;
+        }
         return packet;
     }
 
