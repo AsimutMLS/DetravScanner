@@ -96,27 +96,9 @@ dependencies {
     compileOnly fileTree(dir: 'nonRuntimeLibs', include: '*.jar')
 }
 
-task devJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'dev'
-}
-task generateDebugJar(type: Copy) {
-    from sourceSets.main.allSource
-    into "$buildDir/debugjarsrc/java"
-    filter { line -> line.replaceAll('@false', '@true') }
-}
-task compileDebugJar(type: JavaCompile, dependsOn: generateDebugJar){
-	source = file("$buildDir/debugjarsrc")
-	classpath = sourceSets.main.compileClasspath
-	destinationDir =  file("$buildDir/debugjarCompiled")
-}
-task copyResources(type: Copy,dependsOn: compileDebugJar){
-	from sourceSets.main.resources
-	into "$buildDir/debugjarCompiled"
-}
-artifacts {
-    archives devJar
-}
+
+
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.

@@ -98,30 +98,39 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     public Object decode(ByteArrayDataInput aData) {
-        ProspectingPacket packet = new ProspectingPacket(aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt());
-        packet.level = aData.readInt();
+        try {
 
-        int aSize = (packet.size * 2 + 1) * 16;
-        int checkOut = 0;
-        for (int i = 0; i < aSize; i++)
-            for (int j = 0; j < aSize; j++) {
-                byte kSize = aData.readByte();
-                if(kSize == 0) continue;
-                packet.map[i][j] = new HashMap<>();
-                for (int k = 0; k < kSize; k++) {
-                    final byte y = aData.readByte();
-                    final short meta = aData.readShort();
-                    packet.map[i][j].put(y, meta);
-                    if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);
-                    checkOut++;
+
+            ProspectingPacket packet = new ProspectingPacket(aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt(), aData.readInt());
+            packet.level = aData.readInt();
+
+            int aSize = (packet.size * 2 + 1) * 16;
+            int checkOut = 0;
+            for (int i = 0; i < aSize; i++)
+                for (int j = 0; j < aSize; j++) {
+                    byte kSize = aData.readByte();
+                    if (kSize == 0) continue;
+                    packet.map[i][j] = new HashMap<>();
+                    for (int k = 0; k < kSize; k++) {
+                        final byte y = aData.readByte();
+                        final short meta = aData.readShort();
+                        packet.map[i][j].put(y, meta);
+                        if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);
+                        checkOut++;
+                    }
                 }
+            int checkOut2 = aData.readInt();
+            if(checkOut != checkOut2) {
+                ClientProxy.sendMessage = true;
+                return null;
             }
-        int checkOut2 = aData.readInt();
-        if(checkOut != checkOut2) {
+            return packet;
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
             ClientProxy.sendMessage = true;
-            return null;
         }
-        return packet;
+          return null;
+
     }
 
 

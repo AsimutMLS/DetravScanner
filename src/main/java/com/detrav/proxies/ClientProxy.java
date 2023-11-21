@@ -8,6 +8,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -34,7 +35,7 @@ public class ClientProxy extends CommonProxy {
     public void onTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             if (sendMessage &&  Minecraft.getMinecraft().thePlayer != null) {
-                Minecraft.getMinecraft().thePlayer.sendChatMessage("DetravScannerMod: " + "NotFound");
+                Minecraft.getMinecraft().thePlayer.addChatMessage( new ChatComponentText("DetravScannerMod: " + "NotFound"));
                 sendMessage = false;
             }
         }
